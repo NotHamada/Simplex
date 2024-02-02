@@ -7,6 +7,21 @@ b = []
 def Step1():
     print()
 
+def Step2():
+    print()
+
+def Step3():
+    print()
+
+def Step4():
+    print()
+
+def Step5():
+    print()
+
+def Step6():
+    print()
+
 print("Insira os itens da função, separados por espaços:")
 function = input()
 values = function.split()

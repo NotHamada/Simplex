@@ -88,7 +88,7 @@ def Step2():
     print("\nCNK's = {}".format(CN))
     
     # iii)
-    Enters_Base = NIndexes[CN.index(min(CN))]
+    Enters_Base = CN.index(min(CN))
     print("\nValor mínimo = {}".format(min(CN)))
     
     
@@ -101,7 +101,7 @@ def Step3(min_value):
         counter = 0
         print("\nSolução final:")
         for index in BIndexes:
-            print("x{} = {}".format(index + 1, XB[counter]))
+            print("x{} = {}".format(index + 1, round(XB[counter], 2)))
             counter = counter + 1
         for index in NIndexes:
             print("x{} = 0".format(index + 1))

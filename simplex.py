@@ -1,16 +1,16 @@
 import numpy as np
 
-Function = []
-Equation = []
-B = []
 Inverse_B = []
+B = []
 N = []
-b = []
 CBT = []
 CNT = []
+XB = []
+b = []
+Function = []
+Equation = []
 BIndexes = []
 NIndexes = []
-XB = []
 Enters_Base = 0
 Quits_Base = 0
 
@@ -52,10 +52,8 @@ def DefBase():
     print("\nInversa de B = ")
     print(Inverse_B)
 
-    print("\nCBT =")
-    print(CBT)
-    print("\nCNT = ")
-    print(CNT)
+    print("\nCBT = {}".format(CBT))
+    print("\nCNT = {}".format(CNT))
     
     Step1()
 
@@ -188,20 +186,16 @@ def Step6():
     
     Inverse_B = np.linalg.inv(B)
     
-    print("\nB =")
-    print(B)
-    
-    print("\nN =")
-    print(N)
+    print("\nB = {}".format(B))
+
+    print("\nN = {}".format(N))
 
     print("\nInversa de B =")
     print(Inverse_B)
     
-    print("\nCBT = ")
-    print(CBT)
+    print("\nCBT = {}".format(CBT))
     
-    print("\nCNT = ")
-    print(CNT)
+    print("\nCNT = {}".format(CNT))
     
     Enters_Base = Quits_Base = 0
         

@@ -33,7 +33,6 @@ def DefBase():
     matrix_B = []
     matrix_N = []
     for index in BIndexes:
-        print(index)
         matrix_B.append(GetColumn(Equation, index))
         CBT.append(Function[index])
     for index in NIndexes:
@@ -41,63 +40,96 @@ def DefBase():
         CNT.append(Function[index])
     B = Transpose(matrix_B)
     N = Transpose(matrix_N)
+    print("B = ")
     print(np.array(B))
+
+    print("N = ")
     print(np.array(N))
     Inverse_B = np.linalg.inv(B)
-    Step1()
+
+    print("Inversa de B = ")
+    print(Inverse_B)
+
+    print("CBT =")
     print(CBT)
+    print("CNT = ")
     print(CNT)
     
+    Step1()
 
 def Step1():
     global XB
     XB = Inverse_B @ b
+    
+    print("XB = ")
     print(XB)
     
     Step2()
     
 
 def Step2():
-    global CBT, Inverse_B, N, Enters_Base
+    global CBT, Inverse_B, N, Enters_Base, CNT
     
     # i)
     λ = CBT @ Inverse_B
     
-    print(CNT)
+    print("λ =")
+    print(λ)
     
     # ii)
     CN = []
+    counter = 0
     for item in CNT:
-        CN.append(item - (λ @ np.transpose(GetColumn(Equation, item))))
+        CN.append(item - (λ @ np.transpose(GetColumn(N, counter))))
     
+    print("CNK's = ")
     print(CN)
     
     # iii)
-    Enters_Base = 1
-    Step3(min(CN), 1) 
+    Enters_Base = NIndexes[CN.index(min(CN))]
+    Step3(min(CN)) 
 
-def Step3(min_value, index):
+def Step3(min_value):
     if min_value >= 0:
-        return XB
+        print(XB)
+        return
     else:
-        Step4(index)
+        Step4()
 
-def Step4(index):
-    y = Inverse_B @ GetColumn(N, index)
+def Step4():
+    y = Inverse_B @ GetColumn(N, Enters_Base)
+    print("y = ")
     print(y)
     Step5(y)
 
 def Step5(y):
+    global Quits_Base
+    
     has_Solution = False
     for number in y:
         if number > 0:
             has_Solution = True
+            break
     
     if has_Solution == False:
         return ArithmeticError
     
     values = []
-    E = min(B)
+    counter = 0
+    
+    for item in y:
+        if item <= 0:
+            values.append(float('inf'))
+        else:
+            values.append(XB[counter]/ item)
+            counter = counter + 1
+    
+    E = min(values)
+    
+    Quits_Base = values.index(E)
+    
+    print("E = ", E)
+    print(values)
     Step6()
             
 def Step6():
@@ -128,7 +160,9 @@ def Step6():
     
     
     Inverse_B = np.linalg.inv(B)
-    Enters_Base, Quits_Base = 0
+    print(Inverse_B)
+    
+    Enters_Base = Quits_Base = 0
         
     Step1()    
 
@@ -136,9 +170,7 @@ print("Insira os itens da função, separados por espaços:")
 function = input()
 values = function.split()
 Function.extend(int(value) for value in values)
-
-print(Function[0])
-
+print(Function)
 
 print("Agora, coloque a matriz das variáveis:")
 while True:
@@ -148,6 +180,7 @@ while True:
 
     values = line.split()
     Equation.append([int(value) for value in values])
+print(np.array(Equation))
 
 print("Por fim, a matriz b dos resultados:")
 results = input()

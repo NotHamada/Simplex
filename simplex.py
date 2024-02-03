@@ -21,60 +21,64 @@ def Transpose(matrix):
     return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
 
 def DefBase():
-    global Inverse_B, Function, B, N, CBT, CNT
+    global Inverse_B, Function, B, N, CBT, CNT, Equation, BIndexes, NIndexes
     
-    print("Selecione as colunas para a base, separados por espaços:")
-    matrix = np.array(Equation)
-    print(matrix)
+    print("\nSelecione as colunas para a base, separados por espaços:")
+    print(np.array(Equation))
     indexes = input()
     values = indexes.split()
     BIndexes.extend(int(value)-1 for value in values)
     NIndexes.extend(i for i in range(len(Function)) if i not in BIndexes)
-    matrix_B = []
-    matrix_N = []
     for index in BIndexes:
-        matrix_B.append(GetColumn(Equation, index))
+        B.append(GetColumn(Equation, index))
         CBT.append(Function[index])
     for index in NIndexes:
-        matrix_N.append(GetColumn(Equation, index))
+        N.append(GetColumn(Equation, index))
         CNT.append(Function[index])
-    B = Transpose(matrix_B)
-    N = Transpose(matrix_N)
-    print("B = ")
+    B = Transpose(B)
+    N = Transpose(N)
+    print("\nB = ")
     print(np.array(B))
 
-    print("N = ")
+    print("\nN = ")
     print(np.array(N))
+    
+    if np.linalg.det(B) == 0:
+        print("\nA matriz escolhida possui determinante 0!")
+        return
+    
     Inverse_B = np.linalg.inv(B)
 
-    print("Inversa de B = ")
+    print("\nInversa de B = ")
     print(Inverse_B)
 
-    print("CBT =")
+    print("\nCBT =")
     print(CBT)
-    print("CNT = ")
+    print("\nCNT = ")
     print(CNT)
     
     Step1()
 
 def Step1():
+    print("\nPasso 1:")
     global XB
     XB = Inverse_B @ b
-    
-    print("XB = ")
-    print(XB)
+
+    print("\nXB = Inversa de B * b")    
+    print("\nXB = {}".format(XB))
     
     Step2()
     
 
 def Step2():
+    print("\nPasso 2:")
     global CBT, Inverse_B, N, Enters_Base, CNT
     
     # i)
     λ = CBT @ Inverse_B
     
-    print("λ =")
-    print(λ)
+    print("\nλ = CBT * Inversa de B")
+    print("\nλ = {}".format(λ))
     
     # ii)
     CN = []
@@ -82,27 +86,46 @@ def Step2():
     for item in CNT:
         CN.append(item - (λ @ np.transpose(GetColumn(N, counter))))
     
-    print("CNK's = ")
-    print(CN)
+    print("\nĈNK = CNK - λ * an")
+    print("\nCNK's = {}".format(CN))
     
     # iii)
     Enters_Base = NIndexes[CN.index(min(CN))]
+    print("\nValor mínimo = {}".format(min(CN)))
+    
+    
     Step3(min(CN)) 
 
 def Step3(min_value):
+    print("\nPasso 3:")
+    print("\n{} < 0?".format(min_value))
     if min_value >= 0:
-        print(XB)
+        counter = 0
+        print("\nSolução final:")
+        for index in BIndexes:
+            print("x{} = {}".format(index + 1, XB[counter]))
+            counter = counter + 1
+        for index in NIndexes:
+            print("x{} = 0".format(index + 1))
+        
         return
     else:
+        print("\nNão satisfez a condição, segue o algoritmo")
         Step4()
 
 def Step4():
+    print("\nPasso 4:")
+    
     y = Inverse_B @ GetColumn(N, Enters_Base)
-    print("y = ")
+    print("\ny = Inversa de B * CNK menor")
+    print("\ny = ")
     print(y)
     Step5(y)
 
 def Step5(y):
+    print("\nPasso 5:")
+    print("\nVerificar se os números são menores que zero")
+    
     global Quits_Base
     
     has_Solution = False
@@ -112,7 +135,8 @@ def Step5(y):
             break
     
     if has_Solution == False:
-        return ArithmeticError
+        print("O sistema não tem solução!")
+        return 
     
     values = []
     counter = 0
@@ -128,11 +152,14 @@ def Step5(y):
     
     Quits_Base = values.index(E)
     
-    print("E = ", E)
+    print("\nÊ = min(XBn/Yn...)")
+    print("\nÊ =", E)
     print(values)
     Step6()
             
 def Step6():
+    print("\nPasso 6:")
+    
     global B, N, CBT, CNT, Inverse_B, Enters_Base, Quits_Base, BIndexes, NIndexes
     
     transpose_B = Transpose(B)
@@ -160,7 +187,21 @@ def Step6():
     
     
     Inverse_B = np.linalg.inv(B)
+    
+    print("\nB =")
+    print(B)
+    
+    print("\nN =")
+    print(N)
+
+    print("\nInversa de B =")
     print(Inverse_B)
+    
+    print("\nCBT = ")
+    print(CBT)
+    
+    print("\nCNT = ")
+    print(CNT)
     
     Enters_Base = Quits_Base = 0
         
@@ -172,7 +213,7 @@ values = function.split()
 Function.extend(int(value) for value in values)
 print(Function)
 
-print("Agora, coloque a matriz das variáveis:")
+print("\nAgora, coloque a matriz das variáveis:")
 while True:
     line = input()
     if line == "":
@@ -182,7 +223,7 @@ while True:
     Equation.append([int(value) for value in values])
 print(np.array(Equation))
 
-print("Por fim, a matriz b dos resultados:")
+print("\nPor fim, a matriz b dos resultados:")
 results = input()
 values = results.split()
 b.extend(int(value) for value in values)

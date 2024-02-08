@@ -1,3 +1,6 @@
+# Matheus Hamada ra124101
+# Rafael Alexander Lopes ra127522
+
 import numpy as np
 
 Inverse_B = []
@@ -83,6 +86,7 @@ def Step2():
     counter = 0
     for item in CNT:
         CN.append(item - (λ @ np.transpose(GetColumn(N, counter))))
+        counter = counter + 1
     
     print("\nĈNK = CNK - λ * an")
     print("\nCNK's = {}".format(CN))

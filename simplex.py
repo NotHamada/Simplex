@@ -142,6 +142,7 @@ def Step5(y):
     for item in y:
         if item <= 0:
             values.append(float('inf'))
+            counter = counter + 1
         else:
             values.append(XB[counter]/ item)
             counter = counter + 1

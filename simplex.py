@@ -96,7 +96,7 @@ def Step2():
 
 def Step3(min_value):
     print("\nPasso 3:")
-    print("\n{} < 0?".format(min_value))
+    print("\n{} >= 0?".format(min_value))
     if min_value >= 0:
         counter = 0
         print("\nSolução final:")
